@@ -71,4 +71,4 @@ curl-v -u curl_client:user -X POST localhost:9000/oauth/token  \
  https://javadeveloperzone.com/?s=oauth2<br>
  https://spring.io/guides/tutorials/spring-boot-oauth2/<br>
  https://memorynotfound.com/spring-security-user-registration-example-thymeleaf/<br>
- "# oauth2-server-" 
+
