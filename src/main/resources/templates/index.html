@@ -1,0 +1,109 @@
+<!DOCTYPE html>
+<html xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+      xmlns:th="http://www.thymeleaf.org"
+      layout:decorate="~{fragments/layout}">
+<head>
+    <title>Admin Dashboard</title>
+</head>
+<body>
+<div layout:fragment="content" th:remove="tag">
+
+    <div class="row">
+        <div class="col-md-6 col-md-offset-3">
+            <h2>Approvals</h2>
+
+            <p class="alert alert-warning">If you revoke the approval for one scope of a client all tokens for that
+                client will be removed as well.</p>
+
+            <table class="table">
+                <thead class="thead-dark">
+                <tr>
+                    <th>Client</th>
+                    <th>Scope</th>
+                    <th>Expires at</th>
+                    <th>Actions</th>
+                </tr>
+                </thead>
+                <tbody>
+                <tr th:each="app : ${approvals}">
+                    <td th:value="${app.clientId}"></td>
+                    <td th:value="${app.scope}"></td>
+                    <td th:value="${app.expiresAt}"></td>
+                    <td th:value="${app.scope}"></td>
+                    <td>
+                        <form action="/approval/revoke" method="POST">
+                            <input type="hidden" th:name="${_csrf.parameterName}" th:value="${_csrf.token}"/>
+                            <input type="hidden" name="userId" th:value="${app.userId}"/>
+                            <input type="hidden" name="clientId" th:value="${app.clientId}"/>
+                            <input type="hidden" name="scope" th:value="${app.scope}"/>
+                            <input type="hidden" name="expiresAt"
+                                   th:value="${#dates.format(app.expiresAt, 'yyyy-MM-dd HH:mm:ss')}"/>
+                            <input type="hidden" name="status" th:value="${app.status}"/>
+                            <input type="hidden" name="lastUpdatedAt"
+                                   th:value="${#dates.format(app.lastUpdatedAt, 'yyyy-MM-dd HH:mm:ss')}"/>
+                            <button type="submit" class="btn btn-default btn-xs">
+                                <span class="glyphicon glyphicon-trash"></span>
+                            </button>
+                        </form>
+                    </td>
+                </tr>
+                </tbody>
+            </table>
+        </div>
+    </div>
+    <div class="row">
+        <div class="col-md-12" sec:authorize="hasRole('ROLE_OAUTH_ADMIN')">
+            <h2>Clients</h2>
+            <table class="table">
+                <thead class="thead-dark">
+                <tr>
+                    <th>Client ID</th>
+                    <th>Resource IDs</th>
+                    <th>Scopes</th>
+                    <th>Grant Types</th>
+                    <th>Roles</th>
+                    <th>Actions</th>
+                </tr>
+                </thead>
+                <tbody>
+                <tr th:each="client : ${clientDetails}">
+                    <td th:text="${client.clientId}"></td>
+                    <td>
+                        <span class="badge badge-primary" th:each="resourceId : ${client.resourceIds}"
+                              th:text="${resourceId}"></span>
+                    </td>
+                    <td>
+                        <span class="badge badge-primary" th:each="scope : ${client.scope}" th:text="${scope}"></span>
+                    </td>
+                    <td>
+                        <span class="badge badge-primary" th:each="grant : ${client.authorizedGrantTypes}"
+                              th:text="${grant}"></span>
+                    </td>
+                    <td>
+                        <span class="badge badge-primary" th:each="authoritie : ${client.authorities}"
+                              th:text="${authoritie}"></span>
+                    </td>
+                    <td>
+                        <a class="btn btn-default btn-xs" th:href="@{/clients/form?client=__${client.clientId}__}">
+                            <i class="far fa-edit"></i>
+                        </a>
+                        <a class="btn btn-default btn-xs" th:href="@{/clients/__${client.clientId}__/delete}">
+                            <i class="fas fa-trash-alt"></i>
+                        </a>
+                    </td>
+                </tr>
+                <tr>
+                    <td colspan="12">
+                        <a class="col-lg-12 d-flex justify-content-end" href="/clients/form">
+                            <i class="fas fa-user-plus"></i>
+                        </a>
+                    </td>
+                </tr>
+                </tbody>
+            </table>
+        </div>
+    </div>
+
+</div>
+</body>
+</html>

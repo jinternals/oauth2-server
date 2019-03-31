@@ -1,0 +1,39 @@
+server:
+  port: 9000
+
+info:
+  app:
+    name: @project.name@
+    groupId: @project.groupId@
+    artifactId: @project.artifactId@
+    version: @project.version@
+
+spring:
+  datasource:
+    hikari:
+      connection-test-query: SELECT 1 FROM DUAL
+      minimum-idle: 1
+      maximum-pool-size: 5
+    driver-class-name: com.mysql.jdbc.Driver
+    jdbc-url: jdbc:mysql://mysql:3306/oauth2
+    username: root
+    password:
+    initialization-mode: always
+  jpa:
+    hibernate:
+      ddl-auto: none
+  mail:
+    default-encoding: UTF-8
+    host: smtp.gmail.com
+    username: <email>
+    password: <password>
+    port: 587
+    properties:
+      mail:
+        smtp:
+          auth: true
+          starttls:
+            enable: true
+    protocol: smtp
+    test-connection: false
+
