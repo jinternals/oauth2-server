@@ -1,9 +1,14 @@
 
-# oauth2 server
+# OAuth2 server
 
 ## How to build and run:
 > mvn clean install docker:build <br>
 > docker-compose -f docker-compose.yml up -d
+
+## OpenID Connect:
+Open Id Connect is a standardization effor to bring typical use cases of OAuth2 under a common well-defined spec. As many details behind OAuth2 are left to the choice of implementators, OpenId Connect attempt to provid proper definations to missing parts. Specifically, OpenID Connect defines an API and data format to perform OAuth2 authorization flows. 
+
+https://openid.net/connect/
 
 
 ## Grant Types : 
